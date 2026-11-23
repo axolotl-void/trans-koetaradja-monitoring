@@ -1,0 +1,42 @@
+# Dependensi
+monitoring/vendor/
+monitoring/node_modules/
+monitoring/public/build/
+monitoring/public/hot/
+monitoring/public/storage/
+
+# Lingkungan & rahasia
+.env
+.env.*
+!.env.example
+monitoring/.env
+monitoring/.env.*
+!monitoring/.env.example
+monitoring/auth.json
+
+# Basis data lokal
+monitoring/database/*.sqlite
+monitoring/*.sqlite
+monitoring/transkoetaradja
+*.sqlite
+
+# Cache & log
+monitoring/storage/*.key
+monitoring/storage/logs/*.log
+monitoring/storage/framework/cache/data/*
+monitoring/storage/framework/sessions/*
+monitoring/storage/framework/views/*
+monitoring/bootstrap/cache/*.php
+
+# Arsip besar
+monitoring.zip
+*.zip
+*.tar.gz
+
+# Sistem operasi & editor
+.DS_Store
+**/.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp

@@ -1,0 +1,51 @@
+services:
+  db:
+    image: mariadb:10.11
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: transkoetaradja
+      MARIADB_USER: laravel
+      MARIADB_PASSWORD: laravel
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./transkoetaradja.sql:/docker-entrypoint-initdb.d/01-dump.sql:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    ports:
+      - "3307:3306"
+
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./monitoring:/var/www/html
+    environment:
+      APP_NAME: "Trans Koetaradja"
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:8090
+      APP_KEY: "base64:IfbvJ8HuB6CuUBqzIwQbAzTo5J182dirIUAy6O5Uz0E="
+      APP_TIMEZONE: Asia/Jakarta
+      APP_LOCALE: id
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: "3306"
+      DB_DATABASE: transkoetaradja
+      DB_USERNAME: laravel
+      DB_PASSWORD: laravel
+      SESSION_DRIVER: database
+      SESSION_LIFETIME: "120"
+      CACHE_STORE: file
+      QUEUE_CONNECTION: database
+      LOG_CHANNEL: stack
+      LOG_LEVEL: debug
+    ports:
+      - "8090:80"
+
+volumes:
+  dbdata:
